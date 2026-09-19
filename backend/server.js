@@ -11,30 +11,31 @@ dotenv.config();
 
 const app = express();
 
+const corsOptions = {
+  origin: "https://job-tracker-azure-nine.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
+// Explicitly handle browser preflight requests
+app.options(/.*/, cors(corsOptions));
+
+app.use(express.json());
+
 connectDB();
 
-app.use(
-  cors({
-    origin: "https://job-tracker-azure-nine.vercel.app",
-  })
-);
-
-
-
+// Test route
 app.get("/", (req, res) => {
   res.json({
     message: "JobTrack API is running 🚀",
   });
 });
 
-app.use(express.json());
-
+// API routes
 app.use("/api/auth", authRoutes);
-
-app.use(
-  "/api/applications",
-  applicationRoutes
-);
+app.use("/api/applications", applicationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
