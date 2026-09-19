@@ -15,17 +15,19 @@ connectDB();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://job-tracker-azure-nine.vercel.app",
   })
 );
 
-app.use(express.json());
+
 
 app.get("/", (req, res) => {
   res.json({
     message: "JobTrack API is running 🚀",
   });
 });
+
+app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
